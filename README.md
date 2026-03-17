@@ -34,7 +34,7 @@ A web application that translates Japanese PDFs to English. Supports both **text
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/nisakib/Pdf-reader.git
+git clone <your-repo-url>
 cd Pdf-reader
 
 # 2. Create environment file
