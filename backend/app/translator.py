@@ -1,6 +1,4 @@
 import logging
-import time
-from typing import Optional
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 from .config import settings
@@ -8,6 +6,7 @@ from .config import settings
 logger = logging.getLogger(__name__)
 
 MAX_CHUNK_CHARS = 3000
+PLACEHOLDER_MAX_CHARS = 200
 
 
 def translate_text(japanese_text: str) -> str:
@@ -19,7 +18,7 @@ def translate_text(japanese_text: str) -> str:
         return _translate_openai(japanese_text)
     else:
         logger.warning("No translation provider configured; returning placeholder.")
-        return f"[Translation unavailable – set OPENAI_API_KEY] Original: {japanese_text[:200]}"
+        return f"[Translation unavailable – set OPENAI_API_KEY] Original: {japanese_text[:PLACEHOLDER_MAX_CHARS]}"
 
 
 def _chunk_text(text: str, max_chars: int = MAX_CHUNK_CHARS) -> list[str]:

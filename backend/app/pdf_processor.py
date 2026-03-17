@@ -7,6 +7,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 MIN_TEXT_LENGTH = 50  # chars per page to consider it "text-based"
+OCR_DPI = 300
+POINTS_PER_INCH = 72
 
 
 def extract_pages(pdf_path: str) -> list[dict]:
@@ -42,8 +44,9 @@ def extract_pages(pdf_path: str) -> list[dict]:
 
 def _ocr_page(page) -> str:
     """Render a PDF page to image and run Tesseract OCR with Japanese language."""
-    # Render at 300 DPI for good OCR quality
-    mat = fitz.Matrix(300 / 72, 300 / 72)
+    # Render at OCR_DPI for good OCR quality
+    scale = OCR_DPI / POINTS_PER_INCH
+    mat = fitz.Matrix(scale, scale)
     pix = page.get_pixmap(matrix=mat, alpha=False)
     img_bytes = pix.tobytes("png")
     img = Image.open(io.BytesIO(img_bytes))

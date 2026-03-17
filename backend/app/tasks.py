@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+from datetime import timedelta
 from celery import Celery
 from .config import settings
 from .pdf_processor import extract_pages
@@ -14,7 +15,7 @@ celery_app.conf.update(
     task_serializer="json",
     result_serializer="json",
     accept_content=["json"],
-    result_expires=3600 * 24,  # 24h
+    result_expires=int(timedelta(days=1).total_seconds()),
     worker_prefetch_multiplier=1,
     task_acks_late=True,
 )
